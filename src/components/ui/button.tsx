@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -19,9 +19,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // Netflix-style variants
         netflixPrimary: "bg-white text-[#141414] hover:bg-gray-200 shadow-lg",
-        netflixSecondary: "bg-gray-700 text-white hover:bg-gray-600 border border-gray-600/50 shadow-lg",
-        netflixAccent: "bg-netflix-accent text-white hover:bg-[#f40612] shadow-lg",
-        netflixOutline: "border border-netflix-accent text-netflix-accent bg-transparent hover:bg-netflix-accent/10",
+        netflixSecondary:
+          "bg-gray-700 text-white hover:bg-gray-600 border border-gray-600/50 shadow-lg",
+        netflixAccent:
+          "bg-netflix-accent text-white hover:bg-[#f40612] shadow-lg",
+        netflixOutline:
+          "border border-netflix-accent text-netflix-accent bg-transparent hover:bg-netflix-accent/10",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -36,12 +39,13 @@ const buttonVariants = cva(
       size: "default",
     },
   }
-)
+);
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -49,14 +53,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild) {
       const children = React.Children.toArray(props.children);
       if (children.length === 1 && React.isValidElement(children[0])) {
-        return React.cloneElement(
-          children[0] as React.ReactElement<any>,
-          {
-            className: cn(buttonVariants({ variant, size, className }), children[0].props.className),
-            ref,
-            ...props,
-          }
-        );
+        return React.cloneElement(children[0] as React.ReactElement<any>, {
+          className: cn(
+            buttonVariants({ variant, size, className }),
+            (children[0] as React.ReactElement<any>).props.className
+          ),
+          ref,
+          ...props,
+        });
       }
       return (
         <span
@@ -75,7 +79,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       />
     );
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button";
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

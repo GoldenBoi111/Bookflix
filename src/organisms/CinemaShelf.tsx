@@ -22,7 +22,14 @@ interface Props {
   isLibraryView?: boolean; // Flag to indicate if this is being used in the Library page
 }
 
-export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemove, isLibraryView = false }: Props) {
+export function CinemaShelf({
+  title,
+  books,
+  onSelectBook,
+  onToggleStatus,
+  onRemove,
+  isLibraryView = false,
+}: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [can, setCan] = useState({ left: false, right: true });
   const {
@@ -36,14 +43,14 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
   } = useReadingList();
 
   // Helper function to toggle book status
-  const toggleBook = (book: Book) => {
+  /*const toggleBook = (book: Book) => {
     toggleStatus(book);
   };
 
   // Helper function to check if book is in reading list
   const isBookInList = (id: number) => {
     return isInToRead(id) || isInAlreadyRead(id);
-  };
+  };*/
 
   const check = () => {
     const el = scrollRef.current;
@@ -60,7 +67,9 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
   return (
     <div className="mb-8 px-0 sm:px-4 md:px-6 lg:px-8">
       {title && (
-        <h2 className="text-2xl md:text-4xl font-black mb-6 tracking-tight text-white" id={`shelf-${title?.toLowerCase().replace(/\s+/g, '-')}`}>
+        <h2
+          className="text-2xl md:text-4xl font-black mb-6 tracking-tight text-white"
+          id={`shelf-${title?.toLowerCase().replace(/\s+/g, "-")}`}>
           {title}
         </h2>
       )}
@@ -70,7 +79,11 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
           onScroll={check}
           className="flex gap-2 md:gap-4 lg:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide pb-4"
           role="region"
-          aria-labelledby={title ? `shelf-${title?.toLowerCase().replace(/\s+/g, '-')}` : undefined}
+          aria-labelledby={
+            title
+              ? `shelf-${title?.toLowerCase().replace(/\s+/g, "-")}`
+              : undefined
+          }
           tabIndex={0}>
           {books.map((b) => (
             <motion.div
@@ -91,7 +104,7 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     if (onSelectBook) {
                       onSelectBook(b);
@@ -180,12 +193,20 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
                                 ? "bg-gray-600/70 text-white hover:bg-gray-500/70"
                                 : "bg-gray-700/70 text-white hover:bg-gray-600/70"
                           }`}
-                          aria-label={isInToRead(b.id) ? `Move ${b.title} to Already Read` :
-                                    isInAlreadyRead(b.id) ? `Move ${b.title} to To Read` :
-                                    `Add ${b.title} to To Read`}
-                          title={isInToRead(b.id) ? `Move ${b.title} to Already Read` :
-                                isInAlreadyRead(b.id) ? `Move ${b.title} to To Read` :
-                                `Add ${b.title} to To Read`}>
+                          aria-label={
+                            isInToRead(b.id)
+                              ? `Move ${b.title} to Already Read`
+                              : isInAlreadyRead(b.id)
+                                ? `Move ${b.title} to To Read`
+                                : `Add ${b.title} to To Read`
+                          }
+                          title={
+                            isInToRead(b.id)
+                              ? `Move ${b.title} to Already Read`
+                              : isInAlreadyRead(b.id)
+                                ? `Move ${b.title} to To Read`
+                                : `Add ${b.title} to To Read`
+                          }>
                           {isInToRead(b.id) ? (
                             <BookOpen className="w-4 h-4" aria-hidden="true" />
                           ) : isInAlreadyRead(b.id) ? (
@@ -240,8 +261,16 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
                               ? "bg-gray-600/70 text-white hover:bg-gray-500/70"
                               : "bg-gray-700/70 text-white hover:bg-gray-600/70"
                           }`}
-                          aria-label={isInToRead(b.id) ? `Remove ${b.title} from To Read` : `Add ${b.title} to To Read`}
-                          title={isInToRead(b.id) ? `Remove ${b.title} from To Read` : `Add ${b.title} to To Read`}>
+                          aria-label={
+                            isInToRead(b.id)
+                              ? `Remove ${b.title} from To Read`
+                              : `Add ${b.title} to To Read`
+                          }
+                          title={
+                            isInToRead(b.id)
+                              ? `Remove ${b.title} from To Read`
+                              : `Add ${b.title} to To Read`
+                          }>
                           {isInToRead(b.id) ? (
                             <Check className="w-4 h-4" aria-hidden="true" />
                           ) : (
@@ -268,9 +297,20 @@ export function CinemaShelf({ title, books, onSelectBook, onToggleStatus, onRemo
                               ? "bg-netflix-accent/70 text-white hover:bg-netflix-accent/60"
                               : "bg-gray-700/70 text-white hover:bg-gray-600/70"
                           }`}
-                          aria-label={isInAlreadyRead(b.id) ? `Remove ${b.title} from Already Read` : `Add ${b.title} to Already Read`}
-                          title={isInAlreadyRead(b.id) ? `Remove ${b.title} from Already Read` : `Add ${b.title} to Already Read`}>
-                          <BookOpen className={`w-4 h-4 ${isInAlreadyRead(b.id) ? 'text-blue-400' : ''}`} aria-hidden="true" />
+                          aria-label={
+                            isInAlreadyRead(b.id)
+                              ? `Remove ${b.title} from Already Read`
+                              : `Add ${b.title} to Already Read`
+                          }
+                          title={
+                            isInAlreadyRead(b.id)
+                              ? `Remove ${b.title} from Already Read`
+                              : `Add ${b.title} to Already Read`
+                          }>
+                          <BookOpen
+                            className={`w-4 h-4 ${isInAlreadyRead(b.id) ? "text-blue-400" : ""}`}
+                            aria-hidden="true"
+                          />
                         </motion.button>
                       </>
                     )}

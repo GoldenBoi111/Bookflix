@@ -10,52 +10,53 @@ export function KeyboardShortcuts({ onOpenSearch }: KeyboardShortcutsProps) {
 
   useKeyboardShortcuts([
     {
-      key: 'k',
+      key: "k",
       ctrl: true,
       callback: (e) => {
         e.preventDefault();
         onOpenSearch?.();
-      }
+      },
     },
     {
-      key: '/',
+      key: "/",
       ctrl: false,
       callback: (e) => {
         e.preventDefault();
         onOpenSearch?.();
-      }
+      },
     },
     {
-      key: 'g',
+      key: "g",
       ctrl: true,
       callback: (e) => {
         e.preventDefault();
-        navigate('/');
-      }
+        navigate("/");
+      },
     },
     {
-      key: 'd',
+      key: "d",
       ctrl: true,
       callback: (e) => {
         e.preventDefault();
-        navigate('/discover');
-      }
+        navigate("/discover");
+      },
     },
     {
-      key: 'l',
+      key: "l",
       ctrl: true,
       callback: (e) => {
         e.preventDefault();
-        navigate('/library');
-      }
+        navigate("/library");
+      },
     },
     {
-      key: 'Escape',
+      key: "Escape",
       callback: (e) => {
+        e.preventDefault();
         // This could be used to close modals or search
         // For now, just prevent default behavior
-      }
-    }
+      },
+    },
   ]);
 
   return null; // This component doesn't render anything
