@@ -1,0 +1,64 @@
+/* Netflix-style UI for Bookflix */
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Line clamp utility */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Global button styles */
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--netflix-accent);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  transition: all 0.2s ease;
+}
+
+/* Better focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--netflix-accent);
+  outline-offset: 2px;
+}
