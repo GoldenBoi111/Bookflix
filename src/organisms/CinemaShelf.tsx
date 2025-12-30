@@ -39,7 +39,6 @@ export function CinemaShelf({
     removeFromAlreadyRead,
     isInToRead,
     isInAlreadyRead,
-    toggleStatus,
   } = useReadingList();
 
   // Helper function to toggle book status
