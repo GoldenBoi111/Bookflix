@@ -16,6 +16,7 @@ const BookDetail = lazy(() => import("@/pages/BookDetail"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Login = lazy(() => import("@/pages/Login"));
 const Signup = lazy(() => import("@/pages/Signup"));
+const ReadingStatsPage = lazy(() => import("@/pages/ReadingStatsPage"));
 
 // Simple loading component
 const PageLoader = () => (
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <Signup />
+          </Suspense>
+        )
+      },
+      {
+        path: "reading-stats",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ReadingStatsPage />
           </Suspense>
         )
       },

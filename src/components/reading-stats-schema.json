@@ -1,0 +1,201 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "User Reading Statistics Schema",
+  "description": "Schema for user object in database to support reading statistics",
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "Unique identifier for the user"
+    },
+    "username": {
+      "type": "string",
+      "description": "User's username"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User's email address"
+    },
+    "readingGoals": {
+      "type": "object",
+      "properties": {
+        "annualGoal": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Target number of books to read in a year"
+        },
+        "currentYear": {
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 2100,
+          "description": "The year the goal applies to"
+        },
+        "booksRead": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of books read toward the annual goal"
+        }
+      },
+      "required": ["annualGoal", "currentYear"]
+    },
+    "readingLogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the reading session"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "Reference to the book being read"
+          },
+          "pagesRead": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of pages read in this session"
+          },
+          "timeSpent": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Time spent reading in minutes"
+          },
+          "rating": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5,
+            "description": "Rating given to the book (0-5 scale)"
+          }
+        },
+        "required": ["date", "bookId", "pagesRead"]
+      }
+    },
+    "books": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the book"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the book"
+          },
+          "genre": {
+            "type": "string",
+            "description": "Genre of the book"
+          },
+          "pageCount": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Total number of pages in the book"
+          },
+          "dateStarted": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the user started reading the book"
+          },
+          "dateFinished": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the user finished reading the book"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["reading", "finished", "on-hold", "abandoned"],
+            "description": "Current status of the book"
+          }
+        },
+        "required": ["title", "author", "genre", "pageCount", "status"]
+      }
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "totalPagesRead": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of pages read by the user"
+        },
+        "totalBooksRead": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of books completed by the user"
+        },
+        "averageRating": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Average rating given by the user across all books"
+        },
+        "dailyReadingStreak": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Current number of consecutive days with reading activity"
+        },
+        "longestReadingStreak": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Longest recorded reading streak"
+        },
+        "avgPagesPerMinute": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Average number of pages read per minute"
+        },
+        "mostReadGenres": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "genre": {
+                "type": "string",
+                "description": "Name of the genre"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Number of books read in this genre"
+              }
+            },
+            "required": ["genre", "count"]
+          }
+        },
+        "mostReadAuthors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "author": {
+                "type": "string",
+                "description": "Name of the author"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Number of books read by this author"
+              }
+            },
+            "required": ["author", "count"]
+          }
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user account was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user record was last updated"
+    }
+  },
+  "required": ["_id", "username", "email", "readingGoals", "readingLogs", "books", "stats", "createdAt", "updatedAt"]
+}

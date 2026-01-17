@@ -7,6 +7,7 @@ import BookDetail from "@/pages/BookDetail";
 import NotFound from "@/pages/NotFound";
 import Login from "@/pages/Login";
 import Signup from "./pages/Signup";
+import ReadingStatsPage from "./pages/ReadingStatsPage";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />,
+      },
+      {
+        path: "reading-stats",
+        element: <ReadingStatsPage />,
       },
     ],
     errorElement: <NotFound />,

@@ -1,5 +1,5 @@
 import { useReadingList } from "@/hooks/useReadingList";
-import { Menu, X, BookOpen, Home, Search } from "lucide-react";
+import { Menu, X, BookOpen, Home, Search, BarChart3 } from "lucide-react";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
 
@@ -65,6 +65,14 @@ export function NavSticky() {
                   {totalCount}
                 </span>
               )}
+            </span>
+          </a>
+          <a
+            href="/reading-stats"
+            className="text-[#b3b3b3] hover:text-white transition duration-200 font-medium py-3 px-4 rounded-lg hover:bg-[#808080]/20">
+            <span className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" aria-hidden="true" />
+              Stats
             </span>
           </a>
         </nav>
@@ -148,6 +156,14 @@ export function NavSticky() {
                   {totalCount}
                 </span>
               )}
+            </a>
+            <a
+              href="/reading-stats"
+              className="block px-3 py-3 rounded-lg text-base font-medium text-[#b3b3b3] hover:text-white hover:bg-[#808080]/20 flex items-center gap-3"
+              onClick={() => setIsMenuOpen(false)}
+              aria-label="View reading statistics">
+              <BarChart3 className="w-5 h-5" aria-hidden="true" />
+              Stats
             </a>
             <div className="pt-4 border-t border-[#808080]/20">
               <a
