@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -7,9 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
   RadialBarChart,
   RadialBar,
   LabelList,
@@ -46,11 +43,6 @@ interface UserStats {
 interface MonthlyData {
   month: string;
   pages: number;
-}
-
-interface GenreData {
-  name: string;
-  value: number;
 }
 
 interface GenreStatsData {
@@ -106,14 +98,6 @@ const monthlyData: MonthlyData[] = [
   { month: "Apr", pages: 280 },
   { month: "May", pages: 420 },
   { month: "Jun", pages: 380 },
-];
-
-const genreData: GenreData[] = [
-  { name: "Fantasy", value: 40 },
-  { name: "Sci-Fi", value: 30 },
-  { name: "Mystery", value: 15 },
-  { name: "Biography", value: 10 },
-  { name: "History", value: 5 },
 ];
 
 // Data for the radar chart - Genre Statistics
@@ -172,8 +156,6 @@ const topAuthors: TopAuthor[] = [
   },
 ];
 
-const COLORS = ["#e50914", "#EC4899", "#3B82F6", "#10B981", "#F59E0B"]; // Netflix red and other colors
-
 const CustomBarLabel: React.FC<any> = (props) => {
   const { x, y, width, value } = props;
   return (
@@ -208,9 +190,6 @@ const ReadingStats: React.FC = () => {
   const [heatmapData, setHeatmapData] = useState<HeatmapData[]>([]);
 
   // Calculate percentage for circular progress bar
-  const percentage = Math.round(
-    (userStats.booksRead / userStats.annualGoal) * 100
-  );
 
   // Generate heatmap data for last 30 days
   const generateHeatmapData = (): HeatmapData[] => {
