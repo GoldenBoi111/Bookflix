@@ -1,5 +1,4 @@
-import React from 'react';
-import ReadingStats from '@/components/ReadingStats';
+import ReadingStats from "@/components/ReadingStats";
 
 const ReadingStatsPage = () => {
   return (
