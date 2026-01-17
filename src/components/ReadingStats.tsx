@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -7,6 +7,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
   RadialBarChart,
   RadialBar,
   LabelList,
@@ -18,8 +21,64 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 
+// Define TypeScript interfaces
+interface UserStats {
+  booksRead: number;
+  annualGoal: number;
+  pagesRead: number;
+  averageRating: number;
+  dailyStreak: number;
+  avgPagesPerMinute: number;
+  longestBook: {
+    title: string;
+    pages: number;
+    author: string;
+  };
+  completedBooks?: number;
+  currentlyReading?: number;
+  toRead?: number;
+  totalBooks?: number;
+  favoriteGenre?: string;
+  mostActiveMonth?: string;
+  readingTime?: string;
+}
+
+interface MonthlyData {
+  month: string;
+  pages: number;
+}
+
+interface GenreData {
+  name: string;
+  value: number;
+}
+
+interface GenreStatsData {
+  subject: string;
+  A: number;
+  fullMark: number;
+}
+
+interface TopAuthor {
+  name: string;
+  books: number;
+  thumbnail: string;
+}
+
+interface TopRatedBook {
+  title: string;
+  author: string;
+  rating: number;
+  cover: string;
+}
+
+interface HeatmapData {
+  day: number;
+  intensity: number;
+}
+
 // Mock data for the dashboard
-const userStats = {
+const userStats: UserStats = {
   booksRead: 12,
   annualGoal: 20,
   pagesRead: 2450,
@@ -40,8 +99,33 @@ const userStats = {
   readingTime: "2h 30m",
 };
 
-// Mock data for top rated books - reflecting reading list statistics
-const topRatedBooks = [
+const monthlyData: MonthlyData[] = [
+  { month: "Jan", pages: 240 },
+  { month: "Feb", pages: 180 },
+  { month: "Mar", pages: 320 },
+  { month: "Apr", pages: 280 },
+  { month: "May", pages: 420 },
+  { month: "Jun", pages: 380 },
+];
+
+const genreData: GenreData[] = [
+  { name: "Fantasy", value: 40 },
+  { name: "Sci-Fi", value: 30 },
+  { name: "Mystery", value: 15 },
+  { name: "Biography", value: 10 },
+  { name: "History", value: 5 },
+];
+
+// Data for the radar chart - Genre Statistics
+const genreStatsData: GenreStatsData[] = [
+  { subject: "Fantasy", A: 40, fullMark: 100 },
+  { subject: "Sci-Fi", A: 30, fullMark: 100 },
+  { subject: "Mystery", A: 15, fullMark: 100 },
+  { subject: "Biography", A: 10, fullMark: 100 },
+  { subject: "History", A: 5, fullMark: 100 },
+];
+
+const topRatedBooks: TopRatedBook[] = [
   {
     title: "The Name of the Wind",
     author: "Patrick Rothfuss",
@@ -74,33 +158,7 @@ const topRatedBooks = [
   },
 ];
 
-const monthlyData = [
-  { month: "Jan", pages: 240 },
-  { month: "Feb", pages: 180 },
-  { month: "Mar", pages: 320 },
-  { month: "Apr", pages: 280 },
-  { month: "May", pages: 420 },
-  { month: "Jun", pages: 380 },
-];
-
-const genreData = [
-  { name: "Fantasy", value: 40 },
-  { name: "Sci-Fi", value: 30 },
-  { name: "Mystery", value: 15 },
-  { name: "Biography", value: 10 },
-  { name: "History", value: 5 },
-];
-
-// Data for the radar chart - Genre Statistics
-const genreStatsData = [
-  { subject: "Fantasy", A: 40, fullMark: 100 },
-  { subject: "Sci-Fi", A: 30, fullMark: 100 },
-  { subject: "Mystery", A: 15, fullMark: 100 },
-  { subject: "Biography", A: 10, fullMark: 100 },
-  { subject: "History", A: 5, fullMark: 100 },
-];
-
-const topAuthors = [
+const topAuthors: TopAuthor[] = [
   {
     name: "Brandon Sanderson",
     books: 5,
@@ -116,7 +174,8 @@ const topAuthors = [
 
 const COLORS = ["#e50914", "#EC4899", "#3B82F6", "#10B981", "#F59E0B"]; // Netflix red and other colors
 
-const CustomBarLabel = ({ x, y, width, value }) => {
+const CustomBarLabel: React.FC<any> = (props) => {
+  const { x, y, width, value } = props;
   return (
     <text
       x={x + width / 2}
@@ -130,7 +189,7 @@ const CustomBarLabel = ({ x, y, width, value }) => {
   );
 };
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-[#222222] p-4 border border-[#808080] rounded-lg shadow-lg">
@@ -142,10 +201,11 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const ReadingStats = () => {
+const ReadingStats: React.FC = () => {
   // State for tracking hovered heatmap box
-  const [hoveredBox, setHoveredBox] = useState(null);
+  const [hoveredBox, setHoveredBox] = useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [heatmapData, setHeatmapData] = useState<HeatmapData[]>([]);
 
   // Calculate percentage for circular progress bar
   const percentage = Math.round(
@@ -153,8 +213,8 @@ const ReadingStats = () => {
   );
 
   // Generate heatmap data for last 30 days
-  const generateHeatmapData = () => {
-    const data = [];
+  const generateHeatmapData = (): HeatmapData[] => {
+    const data: HeatmapData[] = [];
     for (let i = 29; i >= 0; i--) {
       const intensity = Math.floor(Math.random() * 4); // 0-3 intensity levels
       data.push({
@@ -165,15 +225,13 @@ const ReadingStats = () => {
     return data;
   };
 
-  const [heatmapData, setHeatmapData] = useState([]);
-
   // Initialize heatmap data only once when component mounts
   useEffect(() => {
     setHeatmapData(generateHeatmapData());
   }, []);
 
   // Handle mouse movement for tooltip positioning
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     setTooltipPosition({ x: e.clientX, y: e.clientY });
   };
 
@@ -279,7 +337,6 @@ const ReadingStats = () => {
                 responsive
                 barSize={10}
                 data={radialData}
-                reversed
                 width={224}
                 height={224}
                 startAngle={0}
@@ -361,10 +418,7 @@ const ReadingStats = () => {
                       fill="url(#colorGradient)"
                       radius={[8, 8, 0, 0]}
                       animationDuration={800}>
-                      <LabelList
-                        data={monthlyData}
-                        content={<CustomBarLabel />}
-                      />
+                      <LabelList content={<CustomBarLabel />} />
                     </Bar>
                     <defs>
                       <linearGradient
@@ -464,8 +518,6 @@ const ReadingStats = () => {
                   consecutive days
                 </div>
                 <div className="text-netflix-gray text-sm">Last 30 Days</div>
-
-                {/* Removed hover tooltip for reading streak */}
               </div>
 
               <div className="mt-2">
