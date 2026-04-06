@@ -129,7 +129,7 @@ interface Book {
 
 The project follows a standard open-source contribution workflow:
 
-1. Fork the repository.
+1. Fork the repo.
 2. Create a feature branch: `git checkout -b feature/improvement-name`.
 3. Implement changes following the established design tokens in `tailwind.config.ts`.
 4. Ensure all UI components maintain ARIA compliance.
